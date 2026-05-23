@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>左右中央寄せ バグ退治ドリル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-8 text-slate-800">
+
+    <!-- シンプルなヘッダー -->
+    <header class="text-center mb-12">
+        <h1 class="text-2xl font-bold text-slate-900">左右中央寄せ バグ退治ドリル</h1>
+        <p class="text-sm text-slate-500 mt-2">
+            左側のズレているコードを、右側の「見本」と同じになるように修正しましょう！
+        </p>
+    </header>
+
+    <!-- 左右2カラムレイアウト -->
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+
+        <!-- =============================================================
+             💻 【左側】あなたのコード
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-rose-500 font-bold text-lg border-b pb-2">❌ 直すエリア</h2>
+
+            <!-- 
+              🚨 【課題①：margin: 0 auto の罠】
+              この「水色の箱」を、画面（グレーの枠）の左右真ん中に寄せたいです。
+              
+              [現在のバグ]
+              「mx-auto（margin: 0 auto）」と「w-32（横幅）」は正しく書かれているのに、
+              なぜか左側に寄ったまま動いてくれません。
+              
+              [考えるヒント]
+              「表示形式（display）」が邪魔をしています。
+              この要素は今、幅や余白を無視する「インライン（inline）」の性質を持っています。
+              これを、余白を全自動にできる性質に変えてください。
+            -->
+            <div class="bg-slate-100 p-4 border border-dashed border-slate-300 rounded-lg">
+                <span class="inline w-32 bg-sky-300 text-slate-900 p-3 mx-auto text-center font-bold">
+                    ① この箱
+                </span>
+            </div>
+
+            <!-- 
+              🚨 【課題②：text-align: center の罠】
+              この「濃い青の文字」を、水色の看板の左右真ん中に寄せたいです。
+              
+              [現在のバグ]
+              「text-center（text-align: center）」をしっかり書いたのに、
+              なぜか文字が左側に寄ったままです。
+              
+              [考えるヒント]
+              文字が囲まれている「span」は、文字ぴったりの幅しかない「インライン要素」です。
+              `text-center` は、文字そのものに書くのではなく、
+              「文字を囲んでいる、幅のある親の箱（div）」に書く必要があります。
+            -->
+            <!-- STREAMING_CHUNK: Preparing text-align task inside student section... -->
+            <div class="bg-sky-300 p-4 rounded-lg">
+                <span class="text-center text-blue-900 font-bold">
+                    ② この文字
+                </span>
+            </div>
+
+            <!-- 
+              🚨 【課題③：justify-content: center の罠】
+              3つの丸いボタンを、横並びで左右真ん中に集めたいです。
+              
+              [現在のバグ]
+              「justify-center（justify-content: center）」を記述し、
+              ボタンが横並びになっていますが、なぜか左に固まったままです。
+              
+              [考えるヒント]
+              実は「Flexbox（flex）」という整列ロボットが起動していません。
+              今は、ただ「float」や他の方法で無理やり横に並んでいるだけです。
+              親の箱に「flex」を追加して、ロボットに中央寄せの命令を届くようにしてください。
+            -->
+            <!-- STREAMING_CHUNK: Preparing justify-content task inside student section... -->
+            <div class="bg-slate-100 p-4 border border-dashed border-slate-300 rounded-lg justify-center gap-3">
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">A</span>
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">B</span>
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">C</span>
+            </div>
+
+        </section>
+
+        <!-- =============================================================
+             🎯 【右側】お手本の完成見本
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-emerald-500 font-bold text-lg border-b pb-2">🟢 完成見本（ゴール）</h2>
+
+            <!-- ① お手本：block要素にして mx-auto を効かせる -->
+            <div class="bg-slate-100 p-4 border border-dashed border-slate-200 rounded-lg">
+                <div class="block w-32 bg-sky-300 text-slate-900 p-3 mx-auto text-center font-bold">
+                    ① この箱
+                </div>
+            </div>
+
+            <!-- ② お手本：親のdiv要素に text-center を指定する -->
+            <!-- STREAMING_CHUNK: Preparing text-align target in the reference section... -->
+            <div class="bg-sky-300 p-4 rounded-lg text-center">
+                <span class="text-blue-900 font-bold">
+                    ② この文字
+                </span>
+            </div>
+
+            <!-- ③ お手本：flex を起動させて justify-center を効かせる -->
+            <!-- STREAMING_CHUNK: Preparing justify-content target in the reference section... -->
+            <div class="bg-slate-100 p-4 border border-dashed border-slate-200 rounded-lg flex justify-center gap-3">
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">A</span>
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">B</span>
+                <span class="inline-block w-10 h-10 bg-slate-900 text-white rounded-full text-center leading-10 font-bold">C</span>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
+
+
+</html>
