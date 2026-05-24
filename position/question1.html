@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配置＆移動 バグ退治ドリル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-8 text-slate-800">
+
+    <!-- シンプルなヘッダー -->
+    <header class="text-center mb-12">
+        <h1 class="text-2xl font-bold text-slate-900">配置＆移動 バグ退治ドリル</h1>
+        <p class="text-sm text-slate-500 mt-2">
+            左側のズレているコードを、右側の「見本」と同じになるように修正しましょう！
+        </p>
+    </header>
+
+    <!-- 左右2カラムレイアウト -->
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+
+        <!-- =============================================================
+             💻 【左側】あなたのコード
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-rose-500 font-bold text-lg border-b pb-2">❌ 直すエリア</h2>
+
+            <!-- 
+              🚨 【課題①：position 基準点の罠】
+              水色の土台（親）の「右上ぴったり（top-0 right-0）」に、
+              濃い青の小さな四角（子）をピン留めしたいです。
+              
+              [現在のバグ]
+              濃い青の四角（子）が水色の土台から飛び出して、
+              画面全体の右上（または全く違う場所）に飛んでいってしまっています。
+              
+              [考えるヒント]
+              画びょう（absolute）を刺すときは、どこを「土台（relative）」にするか
+              ブラウザに教えてあげる必要があります。親の箱（水色）に足りないクラスを追加してください。
+            -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2">① 右上にピン留めしたい</span>
+                <div class="w-40 h-40 bg-sky-400  [ ① ここに土台の基準を作るクラスを書く ]">
+                    <div class="absolute top-0 right-0 w-10 h-10 bg-blue-900"></div>
+                </div>
+            </div>
+
+            <!-- 
+              🚨 【課題②：translate 中央寄せズレの罠】
+              水色の土台（親）の「完璧なド真ん中」に、濃い青の小さな四角（子）を置きたいです。
+              
+              [現在のバグ]
+              画びょうで中央（top-1/2 left-1/2）に置いたはずなのに、
+              全体的に少し「右下」にズレてしまっています。
+              
+              [考えるヒント]
+              これだけだと、濃い青の四角の「左上の角（かど）」が中心にきてしまいます。
+              自分自身のサイズ（幅と高さ）の「半分だけ左上にキュッと戻す」ための 
+              translate のクラスを追加して、完璧なド真ん中に補正してください。
+            -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2">② 完璧なド真ん中に置きたい</span>
+                <div class="relative w-40 h-40 bg-sky-400">
+                    <div class="absolute top-1/2 left-1/2  [ ② 自分のサイズの半分だけ戻す translate を追加する ]  w-10 h-10 bg-blue-900"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- =============================================================
+             🎯 【右側】お手本の完成見本（ゴール）
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-emerald-500 font-bold text-lg border-b pb-2">🟢 完成見本（ゴール）</h2>
+
+            <!-- ① お手本：relative があるので、水色の土台の右上にぴったり配置される -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2">① 右上にピン留めしたい</span>
+                <div class="relative w-40 h-40 bg-sky-400">
+                    <div class="absolute top-0 right-0 w-10 h-10 bg-blue-900"></div>
+                </div>
+            </div>
+
+            <!-- ② お手本：-translate-x-1/2 -translate-y-1/2 で完璧な真ん中になる -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2">② 完璧なド真ん中に置きたい</span>
+                <div class="relative w-40 h-40 bg-sky-400">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-900"></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
