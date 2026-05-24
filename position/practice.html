@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配置 ＆ 移動バグ退治ドリル</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-8 text-slate-800">
+
+    <!-- シンプルなヘッダー -->
+    <header class="text-center mb-12">
+        <h1 class="text-2xl font-bold text-slate-900">配置＆移動 バグ退治ドリル</h1>
+        <p class="text-sm text-slate-500 mt-2">
+            左側のセレクトボックスを切り替えて、右側の「見本」と同じになるようにバグを直しましょう！
+        </p>
+    </header>
+
+    <!-- 左右2カラムレイアウト -->
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+
+        <!-- =============================================================
+             💻 【左側】あなたのコード（クラスを選んで変化を体感しよう！）
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-rose-500 font-bold text-lg border-b pb-2 flex justify-between items-center">
+                <span>❌ 直すエリア（ポチポチ切り替えてみてね）</span>
+                <span id="score-badge" class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">バグあり</span>
+            </h2>
+
+            <!-- 
+              🚨 【課題①：position 基準点の罠】
+              親の箱（水色）に足りないクラスを下のセレクトボックスから追加して、
+              濃い青の四角（子）を、水色の親の「右上ぴったり」にピン留めしてください。
+            -->
+            <div id="card-1" class="p-4 rounded-lg border border-transparent transition-colors duration-300">
+                <span class="text-xs text-slate-400 block mb-2 font-bold">① 右上にピン留めしたい</span>
+                
+                <!-- プレビュー画面：変化がスムーズに見えるように transition-all を仕込んでいます -->
+                <div class="w-full h-44 bg-slate-100 rounded border border-dashed border-slate-300 flex items-center justify-center relative overflow-hidden">
+                    <div id="target-parent-1" class="w-40 h-40 bg-sky-400 transition-all duration-500">
+                        <!-- 子要素（absolute）-->
+                        <div class="absolute top-0 right-0 w-10 h-10 bg-blue-900 shadow-md"></div>
+                    </div>
+                </div>
+
+                <!-- クラス選択セレクター -->
+                <div class="mt-4 flex items-center gap-2 bg-slate-900 p-3 rounded-lg text-emerald-400 font-mono text-xs">
+                    <span class="text-slate-400">&lt;div class="w-40 h-40 bg-sky-400</span>
+                    <select id="select-1" class="bg-slate-800 text-white px-2 py-1 rounded border border-slate-700 font-sans focus:outline-none focus:border-teal-400 cursor-pointer">
+                        <option value="">（選択してください）</option>
+                        <option value="relative">relative（土台にする）</option>
+                        <option value="static">static（初期状態）</option>
+                    </select>
+                    <span class="text-slate-400 font-mono">"&gt;</span>
+                </div>
+            </div>
+
+            <!-- 
+              🚨 【課題②：translate 中央寄せズレの罠】
+              水色の土台（親）の「完璧なド真ん中」に、濃い青の小さな四角（子）を置きたいです。
+              自分自身のサイズの半分だけ左上に引き戻す translate を追加してください。
+            -->
+            <div id="card-2" class="p-4 rounded-lg border border-transparent transition-colors duration-300">
+                <span class="text-xs text-slate-400 block mb-2 font-bold">② 完璧なド真ん中に置きたい</span>
+                
+                <!-- プレビュー画面 -->
+                <div class="w-full h-44 bg-slate-100 rounded border border-dashed border-slate-300 flex items-center justify-center">
+                    <div class="relative w-40 h-40 bg-sky-400">
+                        <div id="target-child-2" class="absolute top-1/2 left-1/2 w-10 h-10 bg-blue-900 shadow-md transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- クラス選択セレクター -->
+                <div class="mt-4 flex flex-wrap items-center gap-2 bg-slate-900 p-3 rounded-lg text-emerald-400 font-mono text-xs">
+                    <span class="text-slate-400">&lt;div class="absolute top-1/2 left-1/2</span>
+                    <select id="select-2" class="bg-slate-800 text-white px-2 py-1 rounded border border-slate-700 font-sans focus:outline-none focus:border-teal-400 cursor-pointer">
+                        <option value="">（選択してください）</option>
+                        <option value="-translate-x-1/2 -translate-y-1/2">-translate-x-1/2 -translate-y-1/2</option>
+                        <option value="-translate-y-1/2">-translate-y-1/2（縦だけ）</option>
+                        <option value="-translate-x-1/2">-translate-x-1/2（横だけ）</option>
+                    </select>
+                    <span class="text-slate-400 font-mono">w-10 h-10 bg-blue-900"&gt;</span>
+                </div>
+            </div>
+
+            <!-- 
+              🚨 【課題③：横方向だけの中央寄せ（ツールチップの罠）】
+              水色の土台（親）の「下端ぴったり、かつ、左右の真ん中」に置きたいです。
+              今回は「横（X軸）方向」だけ半分引き戻す translate を追加してください。
+            -->
+            <div id="card-3" class="p-4 rounded-lg border border-transparent transition-colors duration-300">
+                <span class="text-xs text-slate-400 block mb-2 font-bold">③ 下端の左右真ん中に置きたい</span>
+                
+                <!-- プレビュー画面 -->
+                <div class="w-full h-44 bg-slate-100 rounded border border-dashed border-slate-300 flex items-center justify-center">
+                    <div class="relative w-40 h-40 bg-sky-400">
+                        <div id="target-child-3" class="absolute bottom-0 left-1/2 w-10 h-10 bg-blue-900 shadow-md transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- クラス選択セレクター -->
+                <div class="mt-4 flex flex-wrap items-center gap-2 bg-slate-900 p-3 rounded-lg text-emerald-400 font-mono text-xs">
+                    <span class="text-slate-400">&lt;div class="absolute bottom-0 left-1/2</span>
+                    <select id="select-3" class="bg-slate-800 text-white px-2 py-1 rounded border border-slate-700 font-sans focus:outline-none focus:border-teal-400 cursor-pointer">
+                        <option value="">（選択してください）</option>
+                        <option value="-translate-x-1/2">-translate-x-1/2</option>
+                        <option value="-translate-x-1/2 -translate-y-1/2">-translate-x-1/2 -translate-y-1/2</option>
+                        <option value="translate-x-1/2">translate-x-1/2</option>
+                    </select>
+                    <span class="text-slate-400 font-mono">w-10 h-10 bg-blue-900"&gt;</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- =============================================================
+             🎯 【右側】お手本の完成見本（ゴール）
+             ============================================================= -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 space-y-12">
+            <h2 class="text-emerald-500 font-bold text-lg border-b pb-2">🟢 完成見本（ゴール）</h2>
+
+            <!-- ① お手本：relative があるので、水色の土台の右上にぴったり配置される -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2 font-bold">① 右上にピン留めしたい</span>
+                <div class="w-full h-44 bg-slate-100 rounded border border-slate-200 flex items-center justify-center">
+                    <div class="relative w-40 h-40 bg-sky-400">
+                        <div class="absolute top-0 right-0 w-10 h-10 bg-blue-900 shadow-md"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ② お手本：-translate-x-1/2 -translate-y-1/2 で完璧な真ん中になる -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2 font-bold">② 完璧なド真ん中に置きたい</span>
+                <div class="w-full h-44 bg-slate-100 rounded border border-slate-200 flex items-center justify-center">
+                    <div class="relative w-40 h-40 bg-sky-400">
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-900 shadow-md"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ③ お手本：-translate-x-1/2 で横方向だけ真ん中になる -->
+            <div>
+                <span class="text-xs text-slate-400 block mb-2 font-bold">③ 下端の左右真ん中に置きたい</span>
+                <div class="w-full h-44 bg-slate-100 rounded border border-slate-200 flex items-center justify-center">
+                    <div class="relative w-40 h-40 bg-sky-400">
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-10 bg-blue-900 shadow-md"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- インタラクティブJavaScript -->
+    <script>
+        const select1 = document.getElementById('select-1');
+        const select2 = document.getElementById('select-2');
+        const select3 = document.getElementById('select-3');
+
+        const parent1 = document.getElementById('target-parent-1');
+        const child2 = document.getElementById('target-child-2');
+        const child3 = document.getElementById('target-child-3');
+
+        const card1 = document.getElementById('card-1');
+        const card2 = document.getElementById('card-2');
+        const card3 = document.getElementById('card-3');
+        const scoreBadge = document.getElementById('score-badge');
+
+        // 状態チェック
+        function checkAnswers() {
+            let clearedCount = 0;
+
+            // ① 基準点の判定
+            if (select1.value === 'relative') {
+                parent1.classList.add('relative');
+                card1.classList.remove('bg-rose-50/50', 'border-rose-200');
+                card1.classList.add('bg-emerald-50/50', 'border-emerald-200');
+                clearedCount++;
+            } else {
+                parent1.classList.remove('relative');
+                card1.classList.remove('bg-emerald-50/50', 'border-emerald-200');
+                if (select1.value !== "") {
+                    card1.classList.add('bg-rose-50/50', 'border-rose-200');
+                } else {
+                    card1.classList.remove('bg-rose-50/50', 'border-rose-200');
+                }
+            }
+
+            // ② 中央寄せの判定
+            // 既存のtranslateクラスを一旦すべて削除
+            child2.classList.remove('-translate-x-1/2', '-translate-y-1/2');
+            if (select2.value === '-translate-x-1/2 -translate-y-1/2') {
+                child2.classList.add('-translate-x-1/2', '-translate-y-1/2');
+                card2.classList.remove('bg-rose-50/50', 'border-rose-200');
+                card2.classList.add('bg-emerald-50/50', 'border-emerald-200');
+                clearedCount++;
+            } else {
+                if (select2.value === '-translate-y-1/2') {
+                    child2.classList.add('-translate-y-1/2');
+                } else if (select2.value === '-translate-x-1/2') {
+                    child2.classList.add('-translate-x-1/2');
+                }
+                card2.classList.remove('bg-emerald-50/50', 'border-emerald-200');
+                if (select2.value !== "") {
+                    card2.classList.add('bg-rose-50/50', 'border-rose-200');
+                } else {
+                    card2.classList.remove('bg-rose-50/50', 'border-rose-200');
+                }
+            }
+
+            // ③ 下端中央寄せの判定
+            child3.classList.remove('-translate-x-1/2', '-translate-y-1/2', 'translate-x-1/2');
+            if (select3.value === '-translate-x-1/2') {
+                child3.classList.add('-translate-x-1/2');
+                card3.classList.remove('bg-rose-50/50', 'border-rose-200');
+                card3.classList.add('bg-emerald-50/50', 'border-emerald-200');
+                clearedCount++;
+            } else {
+                if (select3.value === '-translate-x-1/2 -translate-y-1/2') {
+                    child3.classList.add('-translate-x-1/2', '-translate-y-1/2');
+                } else if (select3.value === 'translate-x-1/2') {
+                    child3.classList.add('translate-x-1/2');
+                }
+                card3.classList.remove('bg-emerald-50/50', 'border-emerald-200');
+                if (select3.value !== "") {
+                    card3.classList.add('bg-rose-50/50', 'border-rose-200');
+                } else {
+                    card3.classList.remove('bg-rose-50/50', 'border-rose-200');
+                }
+            }
+
+            // スコアラベルの更新
+            if (clearedCount === 3) {
+                scoreBadge.textContent = '🎉 全クリア！完璧です！';
+                scoreBadge.className = 'text-xs bg-emerald-500 text-white font-bold px-3 py-1 rounded-full animate-bounce';
+            } else {
+                scoreBadge.textContent = `バグ退治中: ${clearedCount}/3 完了`;
+                scoreBadge.className = 'text-xs bg-amber-100 text-amber-700 font-bold px-2 py-1 rounded';
+            }
+        }
+
+        // イベントリスナーのセット
+        select1.addEventListener('change', checkAnswers);
+        select2.addEventListener('change', checkAnswers);
+        select3.addEventListener('change', checkAnswers);
+    </script>
+
+</body>
+</html>
